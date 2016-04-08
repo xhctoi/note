@@ -1,0 +1,101 @@
+resetting ...
+
+
+U-Boot 2015.04-g6cf684a-dirty (Apr 02 2016 - 11:15:45)
+
+CPU:   Freescale i.MX6UL rev1.0 at 396 MHz
+CPU:   Temperature 38 C
+Reset cause: WDOG
+Board: MX6UL 14x14 EVK
+I2C:   ready
+DRAM:  512 MiB
+MMC:   FSL_SDHC: 0, FSL_SDHC: 1
+Card did not respond to voltage select!
+MMC init failed
+Using default environment
+
+Display: TFT43AB (480x272)
+Video: 480x272x24
+In:    serial
+Out:   serial
+Err:   serial
+MMC: no card present
+Net:   FEC1
+Error: FEC1 address not set.
+
+Normal Boot
+Hit any key to stop autoboot:  0 
+=> printenv 
+baudrate=115200
+boot_fdt=try
+bootcmd=mmc dev ${mmcdev};mmc dev ${mmcdev}; if mmc rescan; then if run loadbootscript; then run bootscript; else if run loadimage; then run mmcboot; else run netboot; fi; fi; else run netboot; fi
+bootcmd_mfg=run mfgtool_args;bootz ${loadaddr} ${initrd_addr} ${fdt_addr};
+bootdelay=3
+bootscript=echo Running bootscript from mmc ...; source
+console=ttymxc0
+ethact=FEC1
+ethprime=FEC
+fdt_addr=0x83000000
+fdt_file=imx6ul-14x14-evk.dtb
+fdt_high=0xffffffff
+image=zImage
+initrd_addr=0x83800000
+initrd_high=0xffffffff
+ip_dyn=yes
+loadaddr=0x80800000
+loadbootscript=fatload mmc ${mmcdev}:${mmcpart} ${loadaddr} ${script};
+loadfdt=fatload mmc ${mmcdev}:${mmcpart} ${fdt_addr} ${fdt_file}
+loadimage=fatload mmc ${mmcdev}:${mmcpart} ${loadaddr} ${image}
+mfgtool_args=setenv bootargs console=${console},${baudrate} rdinit=/linuxrc g_mass_storage.stall=0 g_mass_storage.removable=1 g_mass_storage.idVendor=0x066F g_mass_storage.idProduct=0x37FF g_mass_storage.iSerialNumber="" clk_ignore_unused 
+mmcargs=setenv bootargs console=${console},${baudrate} root=${mmcroot}
+mmcautodetect=yes
+mmcboot=echo Booting from mmc ...; run mmcargs; if test ${boot_fdt} = yes || test ${boot_fdt} = try; then if run loadfdt; then bootz ${loadaddr} - ${fdt_addr}; else if test ${boot_fdt} = try; then bootz; else echo WARN: Cannot load the DT; fi; fi; else bootz; fi;
+mmcdev=1
+mmcpart=1
+mmcroot=/dev/mmcblk1p2 rootwait rw
+netargs=setenv bootargs console=${console},${baudrate} root=/dev/nfs ip=dhcp nfsroot=${serverip}:${nfsroot},v3,tcp
+netboot=echo Booting from net ...; run netargs; if test ${ip_dyn} = yes; then setenv get_cmd dhcp; else setenv get_cmd tftp; fi; ${get_cmd} ${image}; if test ${boot_fdt} = yes || test ${boot_fdt} = try; then if ${get_cmd} ${fdt_addr} ${fdt_file}; then bootz ${loadaddr} - ${fdt_addr}; else if test ${boot_fdt} = try; then bootz; else echo WARN: Cannot load the DT; fi; fi; else bootz; fi;
+panel=TFT43AB
+script=boot.scr
+
+Environment size: 2014/8188 bytes
+
+=================================================================================================================================
+
+
+sudo dd if=u-boot.imx of=/dev/sdb bs=512 seek=2 conv=fsync
+tftpboot ${loadaddr} u-boot.imx
+mmc write ${loadaddr} 2 710
+mmc write ${loadaddr} 1024/0x200 355*1024/0x200
+
+otg	00 1111
+tf	00 0011
+emmc	00 0010
+
+
+
+setenv ethaddr 00:01:02:03:04:05
+setenv ethaddr1 00:01:02:03:04:15
+setenv serverip 192.168.0.113
+setenv nfsroot '/home/mx/code6ul/rootfs'
+
+setenv serverip 192.168.1.101
+setenv ipaddr 192.168.1.110
+setenv ip_dyn no
+setenv netargs 'setenv bootargs console=${console},${baudrate} root=/dev/nfs ip=dhcp nfsroot=${serverip}:${nfsroot},v3,tcp video=mxcfb0:dev=lcd,if=RGB565'
+setenv ethact FEC
+setenv ethprime FEC1
+
+
+
+stty -F /dev/ttymxc2 speed 115200 cs8 -parenb -cstopb  -echo
+
+ip link set can0 type can bitrate 50000 triple-sampling on
+ip link set can0 up
+cansend can0 -i 0x10 0x11 0x22 0x33 0x44 0x55 0x66 0x77 0x88
+candump can0
+
+
+
+
+

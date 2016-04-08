@@ -1,0 +1,12 @@
+diff --git a/include/configs/mx6ul_14x14_evk.h b/include/configs/mx6ul_14x14_evk.h
+index aabe2f7..679eee9 100644
+--- a/include/configs/mx6ul_14x14_evk.h
++++ b/include/configs/mx6ul_14x14_evk.h
+@@ -83,6 +83,7 @@
+ #define CONFIG_CMD_FAT
+ #define CONFIG_DOS_PARTITION
+ #define CONFIG_SUPPORT_EMMC_BOOT /* eMMC specific */
++#define CONFIG_MX6UL_EVK_EMMC_REWORK
+ #endif
+ 
+ #undef CONFIG_BOOTM_NETBSD

@@ -1,0 +1,5 @@
+files=`ls *.sh`
+for file in $files; do
+    echo "=============  start run $file =============="
+    ./$file
+done
