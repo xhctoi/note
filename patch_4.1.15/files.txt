@@ -1,0 +1,5 @@
+5b7336fe0a426b07eed16fc25b2d3ecb  ./imx6ul-14x14-evk.dts
+519cc6d559d04c0b4b2e9e2bd75e2359  ./imx6ul-14x14-evk-gpmi-weim.dts
+
+linux version 4.1.15
+

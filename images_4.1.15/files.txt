@@ -1,0 +1,4 @@
+02b30e93540b4bc7cad92ced0d792b66  ./imx6ul-14x14-evk.dtb
+33f3f577c126a046e848571786665c97  ./imx6ul-14x14-evk-gpmi-weim.dtb
+
+linux version 4.1.15
