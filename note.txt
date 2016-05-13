@@ -76,16 +76,26 @@ emmc	00 0010
 
 setenv ethaddr 00:01:02:03:04:05
 setenv ethaddr1 00:01:02:03:04:15
-setenv serverip 192.168.0.113
+setenv serverip 192.168.1.101
 setenv nfsroot '/home/mx/code6ul/rootfs'
+setenv nfsroot '/home/mx/code6ul/rootfsqt5'
 
 setenv serverip 192.168.1.101
 setenv ipaddr 192.168.1.110
 setenv ip_dyn no
 setenv netargs 'setenv bootargs console=${console},${baudrate} root=/dev/nfs ip=dhcp nfsroot=${serverip}:${nfsroot},v3,tcp video=mxcfb0:dev=lcd,if=RGB565'
+setenv netargs 'setenv bootargs console=${console},${baudrate} root=/dev/nfs ip=${ipaddr} nfsroot=${serverip}:${nfsroot},v3,tcp video=mxcfb0:dev=hdmi,1920x1080M@60,if=RGB24'
+setenv netargs 'setenv bootargs console=${console},${baudrate} root=/dev/nfs ip=dhcp nfsroot=${serverip}:${nfsroot},v3,tcp video=mxcfb0:dev=hdmi,1920x1080M@60,if=RGB24'
 setenv ethact FEC
 setenv ethprime FEC1
+setenv mmcargs 'setenv bootargs console=${console},${baudrate} root=${mmcroot} video=mxcfb0:dev=hdmi,1280x1024M@60,if=RGB24'
+setenv boot_fdt yes
 
+
+setenv netboot 'echo Booting from net ...; run netargs; if test ${ip_dyn} = yes; then setenv get_cmd dhcp; else setenv get_cmd tftp; fi; ${get_cmd} ${image}; if test ${boot_fdt} = yes || test ${boot_fdt} = try; then if ${get_cmd} ${fdt_addr} ${fdt_file}; then bootz ${loadaddr} - ${fdt_addr}; else if test ${boot_fdt} = try; then bootz; else echo WARN: Cannot load the DT; fi; fi; else bootz; fi;'
+
+
+setenv netboot 'run netargs; setenv get_cmd dhcp;  ${get_cmd} ${image}; ${get_cmd} ${fdt_addr} ${fdt_file}; bootz ${loadaddr} - ${fdt_addr};'
 
 
 stty -F /dev/ttymxc2 speed 115200 cs8 -parenb -cstopb  -echo
@@ -97,5 +107,19 @@ candump can0
 
 
 
+amixer cset name='Left Input Mixer Boost Switch' off
+amixer cset name='Left Boost Mixer LINPUT1 Switch' off
+amixer cset name='Left Boost Mixer LINPUT2 Switch' off
+amixer cset name='Left Boost Mixer LINPUT3 Switch' off
+amixer cset name='Right Input Mixer Boost Switch' on
+amixer cset name='Right Boost Mixer RINPUT1 Switch' on
+amixer cset name='Right Boost Mixer RINPUT2 Switch' on
+amixer cset name='Right Boost Mixer RINPUT3 Switch' off
+amixer cset name='ADC PCM Capture Volume' 220
+amixer cset name='ADC Data Output Select' 0
+amixer cset numid=11,iface=MIXER,name='Headphone Playback Volume' 120
+
+arecord -Dplughw:0,1 -r 44100 -f S16_LE -c 2 -d 5 record.wav
+aplay -Dplughw:0,0 test.wav
 
 

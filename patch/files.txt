@@ -1,0 +1,6 @@
+7c9116d245e97c3d2f18a9fa92f2fd55  ./imx6ul-14x14-evk.dts
+519cc6d559d04c0b4b2e9e2bd75e2359  ./imx6ul-14x14-evk-gpmi-weim.dts
+afec002286b1bf1a0ceb6767ab042a79  ./u-boot_6ul_emmc.patch
+077d98e8d090e4fb1f78476323b0c655  ./u-boot_6ul_nand.patch
+
+linux version is 3.14.52

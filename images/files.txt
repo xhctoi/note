@@ -1,0 +1,7 @@
+98b2e70e5f4f0b5d54a582a42e9c97d0  ./imx6ul-14x14-evk.dtb	    
+658c66b08cfe3334d737296c07fd4cbf  ./imx6ul-14x14-evk-gpmi-weim.dtb
+774e75f7d92736f88dfecf445f6862c3  ./u-boot-imx6ulevk_nand.imx
+c08609eaf7806d3560a1c5417bd12a44  ./u-boot-imx6ulevk_sd.imx
+
+
+linux version is 3.14.52
